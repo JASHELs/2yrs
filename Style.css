@@ -1,0 +1,141 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+[hidden] { display: none !important; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 45%, #1c1038 0%, #08050f 72%);
+  font-family: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+  color: #fff;
+}
+
+/* ---------- Escenario ---------- */
+#stage {
+  position: absolute;
+  left: 50%;
+  top: 58%;
+  transform: translate(-50%, -50%);
+}
+#heart { position: absolute; inset: 0; }
+
+#glow {
+  position: absolute; left: 0; top: 0;
+  opacity: 0;
+  filter: blur(18px);
+  transition: opacity .6s ease;
+}
+#heart.fin #glow { opacity: .3; }
+
+#shadow {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(255,110,200,.55), rgba(140,80,255,.25) 50%, transparent 72%);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---------- Palabras (siempre horizontales) ---------- */
+.w {
+  position: absolute;
+  white-space: nowrap;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: .01em;
+  color: hsl(var(--h) 85% 70%);
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  transition: color .5s, text-shadow .5s;
+  user-select: none;
+}
+.w.on {
+  opacity: 1;
+  text-shadow: 0 0 8px hsl(var(--h) 90% 60% / .5);
+  animation: flash .95s ease-out backwards;
+}
+.w.f.on  { animation: flashf .55s ease-out backwards; }
+.w.xs.on { text-shadow: none; animation: flashx .45s ease-out backwards; }
+.w.still { animation: none !important; }
+
+@keyframes flash {
+  0%   { color: #fff; text-shadow: 0 0 6px #fff, 0 0 18px hsl(var(--h) 100% 72%), 0 0 40px hsl(var(--h) 100% 60%); }
+  100% { color: hsl(var(--h) 85% 70%); text-shadow: 0 0 8px hsl(var(--h) 90% 60% / .5); }
+}
+@keyframes flashf {
+  0%   { color: #fff; text-shadow: 0 0 4px #fff, 0 0 12px hsl(var(--h) 100% 70%); }
+  100% { color: hsl(var(--h) 85% 70%); text-shadow: 0 0 8px hsl(var(--h) 90% 60% / .5); }
+}
+@keyframes flashx {
+  0%   { color: #fff; }
+  100% { color: hsl(var(--h) 85% 70%); }
+}
+
+/* Final: todo el corazón brilla más */
+#heart.fin .w.on {
+  color: hsl(var(--h) 100% 82%);
+  text-shadow: 0 0 10px hsl(var(--h) 100% 70%), 0 0 26px hsl(var(--h) 100% 60% / .8);
+}
+#heart.fin .w.xs.on { text-shadow: none; }
+
+/* ---------- Salto tipo logo GameCube ---------- */
+#heart.hop  { animation: hop 1.7s both; }
+#shadow.hop { animation: shw 1.7s both; }
+
+@keyframes hop {
+  0%   { transform: translateY(0) scale(1,1);                           animation-timing-function: ease-out; }
+  12%  { transform: translateY(0) scale(1.12,.84);                      animation-timing-function: ease-out; }
+  32%  { transform: translateY(calc(var(--jh) * -1)) scale(.95,1.08);   animation-timing-function: ease-in; }
+  50%  { transform: translateY(0) scale(1.14,.82);                      animation-timing-function: ease-out; }
+  62%  { transform: translateY(calc(var(--jh) * -.38)) scale(.98,1.04); animation-timing-function: ease-in; }
+  74%  { transform: translateY(0) scale(1.07,.92);                      animation-timing-function: ease-out; }
+  83%  { transform: translateY(calc(var(--jh) * -.14)) scale(1,1.01);   animation-timing-function: ease-in; }
+  91%  { transform: translateY(0) scale(1.03,.97);                      animation-timing-function: ease-out; }
+  100% { transform: translateY(0) scale(1,1); }
+}
+@keyframes shw {
+  0%   { transform: translate(-50%,-50%) scale(1);    opacity: .5; }
+  12%  { transform: translate(-50%,-50%) scale(1.1);  opacity: .6; }
+  32%  { transform: translate(-50%,-50%) scale(.55);  opacity: .2; }
+  50%  { transform: translate(-50%,-50%) scale(1.15); opacity: .65; }
+  62%  { transform: translate(-50%,-50%) scale(.8);   opacity: .35; }
+  74%  { transform: translate(-50%,-50%) scale(1.05); opacity: .55; }
+  83%  { transform: translate(-50%,-50%) scale(.92);  opacity: .45; }
+  91%  { transform: translate(-50%,-50%) scale(1.02); opacity: .5; }
+  100% { transform: translate(-50%,-50%) scale(1);    opacity: .5; }
+}
+
+/* ---------- Botones ---------- */
+button {
+  font: inherit;
+  color: #fff;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,.25);
+  background: rgba(255,255,255,.07);
+  backdrop-filter: blur(6px);
+  transition: background .2s, transform .2s;
+}
+button:hover { background: rgba(255,255,255,.14); }
+
+#start {
+  position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 28px 44px;
+  border-radius: 24px;
+  font-size: 1.25rem;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  z-index: 5;
+}
+#start:hover { transform: translate(-50%, -50%) scale(1.04); }
+#start span { font-size: 3rem; color: #ff6fb8; text-shadow: 0 0 22px #ff4fa3; animation: beat 1.2s ease-in-out infinite; }
+#start small { opacity: .6; font-size: .8rem; }
+@keyframes beat { 0%,100% { transform: scale(1); } 50% { transform: scale(1.18); } }
+
+#again {
+  position: absolute; left: 50%; bottom: 4vh;
+  transform: translateX(-50%);
+  padding: 10px 22px;
+  border-radius: 999px;
+  font-size: 1rem;
+  z-index: 5;
+}
+#again:hover { transform: translateX(-50%) scale(1.05); }
